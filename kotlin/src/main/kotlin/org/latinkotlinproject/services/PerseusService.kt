@@ -1,0 +1,41 @@
+package org.latinkotlinproject.services
+
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
+import org.springframework.stereotype.Service
+import java.net.HttpURLConnection
+import java.net.URL
+
+@Service
+class PerseusService {
+
+  fun makePerseusRequest(latinWord: String): JsonObject {
+    val url =
+      URL("https://services.perseids.org/bsp/morphologyservice/analysis/word?lang=lat&engine=morpheuslat&word=$latinWord")
+    val connection = url.openConnection() as HttpURLConnection
+
+    connection.requestMethod = "GET"
+
+    try {
+      val responseString = connection.inputStream.bufferedReader().use { it.readText() }
+      return JsonParser.parseString(responseString).asJsonObject
+    } catch (e: Exception) {
+      println("Error: ${e.message}")
+    } finally {
+      connection.disconnect()
+    }
+    return JsonParser.parseString(
+      "{\"response\" : \"Request was not made or there was no data available.\"}"
+    )
+      .asJsonObject
+  }
+
+  fun getPerseusResponseBody(perseusController: JsonObject): JsonElement {
+    return perseusController
+      .getAsJsonObject("RDF")
+      .getAsJsonObject("Annotation")
+      .get("Body")
+  }
+}
+
