@@ -4,7 +4,9 @@ const routes = [
   {
     path: '/',
     name: 'parseWord',
-    component: () => import('../views/ParserView.vue')
+    components: {
+      default: () => import('../views/ParserView.vue'),
+    }
   }
 ]
 

@@ -1,6 +1,7 @@
-const baseURL = process.env.VUE_APP_BASE_URL;
 
-export const endpoints = {
+const baseURL = 'http://localhost:8080'
+
+export default {
   parseWord: `${baseURL}/latinParser/v1/parseWord?latinWord=`,
   getDefinition: ''
 }
