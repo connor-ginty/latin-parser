@@ -1,8 +1,8 @@
 <template>
   <div class="parser-input">
-    <input type="text" v-model="searchQuery" placeholder="Enter your text">
+    <input type="text" v-model="searchQuery" placeholder="Enter Latin word here">
     <button type="submit" @click="fetchData(this.searchQuery)">Parse Word</button>
-    <ParserOutput :parsedData="parsedData"/>
+    <ParserOutput :parsedData="parsedData" :displayWord="displayWord"/>
   </div>
 </template>
 
@@ -18,6 +18,7 @@ export default {
   data() {
     return {
       searchQuery: '',
+      displayWord: this.searchQuery,
       parsedData: []
     }
   },
@@ -32,6 +33,8 @@ export default {
         .catch(error => {
           console.error('Error fetching data:', error)
         })
+        this.displayWord = word
+        this.searchQuery = ''
     }
   },
 }

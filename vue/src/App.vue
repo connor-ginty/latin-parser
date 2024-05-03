@@ -1,5 +1,6 @@
 
 <template>
+  <!-- <HeaderComponentPlaceHolder/> -->
   <router-view/>
 </template>
 

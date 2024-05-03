@@ -1,24 +1,81 @@
 <template>
   <div v-if="parsedData.length" class="parser-output">
-    <h3 class="parsed-data" @data-fetched="handleParsedData">Parsed Data</h3>
-    <ul v-for="(data, index) in parsedData" :key="index">
-      <li>Part of Speech: {{ data.partOfSpeech }}</li>
-      <li>Declension: {{ data.declension }}</li>
-      <li>Gender: {{ data.gender }}</li>
-      <li>Case: {{ data.case }}</li>
-      <li>Number: {{ data.number }}</li>
-      <li>Stem Type: {{ data.stemType }}</li>
-      <li>Person: {{ data.person }}</li>
-      <li>Tense: {{ data.tense }}</li>
-      <li>Voice: {{ data.voice }}</li>
-      <li>Mood: {{ data.mood }}</li>
-    </ul>
+    <h3 class="parsed-data">Results for "{{ displayWord }}"</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Part of Speech</th>
+          <th>Declension</th>
+          <th>Gender</th>
+          <th>Case</th>
+          <th>Number</th>
+          <th>Stem Type</th>
+          <th>Person</th>
+          <th>Tense</th>
+          <th>Voice</th>
+          <th>Mood</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(data, index) in parsedData" :key="index" class="parsed-row" @click="changeStyle">
+          <td v-if="data.partOfSpeech">{{ data.partOfSpeech }}</td>
+          <td v-else>N/A</td>
+          <td v-if="data.declension">{{ data.declension }}</td>
+          <td v-else>N/A</td>
+          <td v-if="data.gender">{{ data.gender }}</td>
+          <td v-else>N/A</td>
+          <td v-if="data.case">{{ data.case }}</td>
+          <td v-else>N/A</td>
+          <td v-if="data.number">{{ data.number }}</td>
+          <td v-else>N/A</td>
+          <td v-if="data.stemType">{{ data.stemType }}</td>
+          <td v-else>N/A</td>
+          <td v-if="data.person">{{ data.person }}</td>
+          <td v-else>N/A</td>
+          <td v-if="data.tense">{{ data.tense }}</td>
+          <td v-else>N/A</td>
+          <td v-if="data.voice">{{ data.voice }}</td>
+          <td v-else>N/A</td>
+          <td v-if="data.mood">{{ data.mood }}</td>
+          <td v-else>N/A</td>
+        </tr>
+      </tbody>
+      <br>
+    </table>
   </div>
 </template>
 
 <script>
 export default {
   name: 'ParserOutput',
-  props: ['parsedData']
+  props: ['displayWord','parsedData'],
 }
 </script>
+
+<style scoped>
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  background-color: #f2f2f2;
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:hover {
+  background-color: #f2f2f2;
+}
+</style>
