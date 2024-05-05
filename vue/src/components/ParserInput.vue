@@ -27,7 +27,6 @@ export default {
       apiService.parseWord(word)
         .then(response => {
           this.parsedData = response.data
-          console.log(this.parsedData)
           this.$emit('data-fetched', this.parsedData)
         })
         .catch(error => {
