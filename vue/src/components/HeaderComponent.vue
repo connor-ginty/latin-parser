@@ -1,7 +1,7 @@
 <template>
   <div class="parser-app-header">
     <header>
-      <h1>Connor's Latin Word Parser</h1>
+      <h1>Lorum Ipsum Et Cetera</h1>
       <img src="@/assets/helmet.jpg" alt="parser app header image" class="header-image">
     </header>
   </div>

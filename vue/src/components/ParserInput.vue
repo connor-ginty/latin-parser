@@ -2,7 +2,7 @@
   <div class="parser-input">
     <input type="text" v-model="searchQuery" placeholder="Enter Latin word here">
     <button type="submit" @click="fetchData(this.searchQuery)">Parse Word</button>
-    <ParserOutput :parsedData="parsedData" :displayWord="displayWord"/>
+    <ParserOutput :parsedData="parsedData" :displayWord="displayWord" :errorMessage="errorMessage" />
   </div>
 </template>
 
@@ -19,7 +19,8 @@ export default {
     return {
       searchQuery: '',
       displayWord: this.searchQuery,
-      parsedData: []
+      parsedData: [],
+      errorMessage: ''
     }
   },
   methods: {
@@ -31,6 +32,8 @@ export default {
         })
         .catch(error => {
           console.error('Error fetching data:', error)
+          this.errorMessage = `${this.displayWord} is not a Latin word. Please try another word.`
+          console.log(this.errorMessage)
         })
         this.displayWord = word
         this.searchQuery = ''

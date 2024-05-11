@@ -1,5 +1,5 @@
 <template>
-  <div v-if="parsedData.length" class="parser-output">
+  <div v-if="parsedData.length && this.errorMessage === ''" class="parser-output">
     <h3 class="parsed-data">Results for "{{ displayWord }}"</h3>
     <table id="output-container-body">
       <thead>
@@ -19,36 +19,39 @@
       <tbody>
         <tr v-for="(data, index) in parsedData" :key="index" class="parsed-row" @click="changeStyle">
           <td v-if="data.partOfSpeech">{{ data.partOfSpeech }}</td>
-          <td v-else class="not-applicable" >N/A</td>
+          <td v-else class="not-applicable">N/A</td>
           <td v-if="data.declension">{{ data.declension }}</td>
-          <td v-else class="not-applicable" >N/A</td>
+          <td v-else class="not-applicable">N/A</td>
           <td v-if="data.gender">{{ data.gender }}</td>
-          <td v-else class="not-applicable" >N/A</td>
+          <td v-else class="not-applicable">N/A</td>
           <td v-if="data.case">{{ data.case }}</td>
-          <td v-else class="not-applicable" >N/A</td>
+          <td v-else class="not-applicable">N/A</td>
           <td v-if="data.number">{{ data.number }}</td>
-          <td v-else class="not-applicable" >N/A</td>
+          <td v-else class="not-applicable">N/A</td>
           <td v-if="data.stemType">{{ data.stemType }}</td>
-          <td v-else class="not-applicable" >N/A</td>
+          <td v-else class="not-applicable">N/A</td>
           <td v-if="data.person">{{ data.person }}</td>
-          <td v-else class="not-applicable" >N/A</td>
+          <td v-else class="not-applicable">N/A</td>
           <td v-if="data.tense">{{ data.tense }}</td>
-          <td v-else class="not-applicable" >N/A</td>
+          <td v-else class="not-applicable">N/A</td>
           <td v-if="data.voice">{{ data.voice }}</td>
-          <td v-else class="not-applicable" >N/A</td>
+          <td v-else class="not-applicable">N/A</td>
           <td v-if="data.mood">{{ data.mood }}</td>
-          <td v-else class="not-applicable" >N/A</td>
+          <td v-else class="not-applicable">N/A</td>
         </tr>
       </tbody>
       <br>
     </table>
+  </div>
+  <div v-else-if="this.errorMessage !== ''" class="error-output">
+    <p>{{ this.errorMessage }}</p>
   </div>
 </template>
 
 <script>
 export default {
   name: 'ParserOutput',
-  props: ['displayWord','parsedData'],
+  props: ['displayWord','parsedData', 'errorMessage'],
 }
 </script>
 
@@ -89,5 +92,12 @@ tr:hover {
 
 td.not-applicable {
   background-color: #f77c7c;
+}
+
+.error-output {
+  height: auto;
+  padding: 20px;
+  /* background-color: #f77c7c; */
+  font-size: large;
 }
 </style>
