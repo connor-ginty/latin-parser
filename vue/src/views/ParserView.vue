@@ -10,8 +10,8 @@ import ParserInput from '@/components/ParserInput.vue'
 export default {
   name: 'ParserView',
   components: {
-    ParserInput,
-  }
+    ParserInput
+  },
 }
 </script>
 
