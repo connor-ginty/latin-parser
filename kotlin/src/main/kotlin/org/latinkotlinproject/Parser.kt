@@ -125,9 +125,9 @@ class Parser {
     return parsedDataList
   }
 
-  fun getPartOfSpeech(latinNoun: String): List<String> {
+  fun getPartOfSpeech(latinWord: String): List<String> {
     val perseusResponse: JsonObject =
-      latinCache.getFromCacheOrFetch(latinNoun, { perseusService.makePerseusRequest(latinNoun) }, 30_000)
+      latinCache.getFromCacheOrFetch(latinWord, { perseusService.makePerseusRequest(latinWord) }, 30_000)
     val nounInfoBody = perseusService.getPerseusResponseBody(perseusResponse)
     val partOfSpeechList = mutableListOf<String>()
 
