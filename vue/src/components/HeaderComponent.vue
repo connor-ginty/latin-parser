@@ -9,7 +9,12 @@
 
 <script>
 export default {
-  name: 'HeaderComponent'
+  name: 'HeaderComponent',
+  data () {
+    return {
+      headerImage: "@/assets/helmet.jpg"
+    }
+  }
 }
 </script>
 
