@@ -1,5 +1,5 @@
 <template>
-  <div class="search-history" :searchHistory="searchHistory">
+  <div class="search-history">
     <nav v-if="searchHistory.length">
       <ul class="search-history-list">
         <h3>Search History</h3>
@@ -13,10 +13,20 @@
 <script>
 export default {
   name: 'SearchHistory',
-  props: ['searchHistory', 'handleSubmissionClick'],
+  props: ['handleSubmissionClick', 'errorMessage'],
+  data() {
+    return {
+      searchHistory: []
+    }
+  },
   methods: {
     parseWordFromHistory(word){
       this.handleSubmissionClick(word)
+    }
+  },
+  addToSearchHistory(word) {
+    if (!this.searchHistory.includes(word) && !this.errorMessage) {
+      this.searchHistory.unshift(word)
     }
   }
 }

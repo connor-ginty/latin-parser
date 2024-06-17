@@ -1,5 +1,5 @@
 <template>
-  <div v-if="parsedData.length && this.errorMessage === ''" class="parser-output">
+  <div v-if="parsedData && this.errorMessage === ''" class="parser-output">
     <h3 class="parsed-data">Results for "{{ displayWord }}"</h3>
     <table id="output-container-body">
       <thead>
@@ -51,7 +51,7 @@
 <script>
 export default {
   name: 'ParserOutput',
-  props: ['displayWord','parsedData', 'errorMessage'],
+  props: ['displayWord', 'parsedData', 'errorMessage'],
 }
 </script>
 
