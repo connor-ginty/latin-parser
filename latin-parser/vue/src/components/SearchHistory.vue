@@ -13,8 +13,20 @@
 <script>
 export default {
   name: 'SearchHistory',
-  props: ['searchHistory', 'handleSubmissionClick'],
+  props: ['errorMessage','handleSubmissionClick'],
+  data() {
+    return {
+      searchHistory: []
+    }
+  },
   methods: {
+    addToSearchHistory(word) {
+      if (!this.searchHistory.includes(word)) {
+        if (!this.errorMessage) {
+          this.searchHistory.unshift(word)
+        }
+      }
+    },
     parseWordFromHistory(word){
       this.handleSubmissionClick(word)
     }

@@ -4,7 +4,8 @@
       @keydown.enter="handleSubmissionClick(this.searchQuery)">
     <button type="submit" @click="handleSubmissionClick(this.searchQuery)">Parse Word</button>
     <ParserOutput :parsedData="parsedData" :displayWord="displayWord" :errorMessage="errorMessage" />
-    <SearchHistory :searchHistory="searchHistory" :handleSubmissionClick="handleSubmissionClick" />
+    <SearchHistory :searchHistory="searchHistory" :errorMessage="errorMessage"
+      :handleSubmissionClick="handleSubmissionClick" />
   </div>
 </template>
 
@@ -19,11 +20,11 @@ export default {
     SearchHistory,
     ParserOutput
   },
+  props: ['addToSearchHistory'],
   data() {
     return {
       searchQuery: '',
       displayWord: this.searchQuery,
-      searchHistory: [],
       parsedData: [],
       errorMessage: ''
     }
@@ -34,7 +35,6 @@ export default {
         this.errorMessage = ''
         this.fetchData(word)
         this.addToSearchHistory(word)
-        console.log(`error message inside handler: ${this.errorMessage}`)
       }
     },
     fetchData(word) {
@@ -46,19 +46,11 @@ export default {
         .catch(error => {
           console.error('Error fetching data:', error)
           this.errorMessage = `${this.displayWord} is not a Latin word. Please try another word.`
-          console.log(`error message inside service call: ${this.errorMessage}`)
+          return this.errorMessage
         })
         this.displayWord = word
-        this.searchQuery = ''
+      this.searchQuery = ''
     },
-    addToSearchHistory(word) {
-      if (!this.searchHistory.includes(word)) {
-        if (!this.errorMessage) {
-          console.log(`error message inside history method: ${this.errorMessage}`)
-          this.searchHistory.unshift(word)
-        }
-      }
-    }
   },
 }
 </script>
