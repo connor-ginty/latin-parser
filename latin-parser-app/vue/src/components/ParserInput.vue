@@ -20,12 +20,12 @@ export default {
     SearchHistory,
     ParserOutput
   },
-  props: ['addToSearchHistory'],
   data() {
     return {
       searchQuery: '',
       displayWord: this.searchQuery,
       parsedData: [],
+      searchHistory: [],
       errorMessage: ''
     }
   },
@@ -50,6 +50,13 @@ export default {
         })
         this.displayWord = word
       this.searchQuery = ''
+    },
+    addToSearchHistory(word) {
+      if (!this.searchHistory.includes(word)) {
+        if (!this.errorMessage) {
+          this.searchHistory.unshift(word)
+        }
+      }
     },
   },
 }

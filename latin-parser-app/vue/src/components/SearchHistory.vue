@@ -13,26 +13,13 @@
 <script>
 export default {
   name: 'SearchHistory',
-  props: ['errorMessage','handleSubmissionClick'],
-  data() {
-    return {
-      searchHistory: []
-    }
-  },
+  props: ['searchHistory', 'handleSubmissionClick'],
   methods: {
-    addToSearchHistory(word) {
-      if (!this.searchHistory.includes(word)) {
-        if (!this.errorMessage) {
-          this.searchHistory.unshift(word)
-        }
-      }
-    },
     parseWordFromHistory(word){
       this.handleSubmissionClick(word)
     }
   }
 }
-
 </script>
 
 <style>
@@ -50,13 +37,11 @@ export default {
   padding: 8px;
   text-align: center;
 }
-
 .search-history-list > li {
   padding-bottom: 5px;
   text-decoration: underline;
   color: blue;
 }
-
 li:hover {
   font-weight: bold;
 }
