@@ -18,3 +18,19 @@ This application is a true passion project for the sake of refining my technical
 
 - [Latin Word Study Tool](https://www.perseus.tufts.edu/hopper/morph?l=chartis&la=la) - online Latin word parser with Lewis & Short Latin dictionary, affiliated with Tufts University
 - [SPQR mobile app](https://apps.apple.com/us/app/spqr-latin-dictionary-and-reader/id407340562) -  mobile word parser with extensive Latin dictionary, developed by Paul Hudson
+
+## Latin Language Terminology Crash Course
+
+**Cases** - the endings on a noun, adjective, or participle that determine how they function in a sentence (subject, direct object, possession, etc.)
+
+**Declensions** - categories of endings for cases
+
+**Person** - 1st, 2nd, or 3rd person for verbs (I, you, he/she/it, we, you all, they)
+
+**Number** - singular or plural
+
+**Gender** - grammatical gender of a noun, adjective, or participle (masculine, feminine, neuter)
+
+**Voice** - active or passive voice for verbs and participles
+
+**Mood** - indicative, subjunctive, or imperative mood for verbs
