@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.RestController
 import org.latinkotlinproject.controllers.ServiceResponseBodies.*
 
 @RestController
-@RequestMapping("/latinParser/v1")
+@RequestMapping("/latinParser")
 class ParserController {
 
   val parser = Parser()
 
-  @GetMapping("/parseWordV1")
+  @GetMapping("/v1/parseWord")
   fun getParsingData(@RequestParam latinWord: String): List<ParsingData> {
     return parser.parseWord(latinWord)
   }
 
-  @GetMapping("/parseWordV2")
+  @GetMapping("/v2/parseWord")
   fun getParsingDataV2(@RequestParam latinWord: String): ParserServiceResponse<List<ParsingData>> {
     val parsedData: List<ParsingData> = parser.parseWord(latinWord)
 
