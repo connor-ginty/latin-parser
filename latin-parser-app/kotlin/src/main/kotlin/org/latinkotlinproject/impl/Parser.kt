@@ -5,6 +5,8 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import org.latinkotlinproject.data.ParsingData
 import org.latinkotlinproject.services.LatinCache
+//import org.latinkotlinproject.data.ParsingData
+//import org.latinkotlinproject.services.LatinCache
 import org.latinkotlinproject.services.PerseusService
 
 private val perseusService = PerseusService()
@@ -19,15 +21,16 @@ class Parser {
 
     var parsedDataList: List<ParsingData> = mutableListOf<ParsingData>()
 
+    // Body is an array = more than 1 part of speech per word
+    if (wordInfoBody.isJsonArray && !wordInfoBody.asJsonArray.isEmpty) {
+      parsedDataList = getDataFromBodyArray(wordInfoBody.asJsonArray)
+    }
+
     // Body is an object = 1 part of speech per word
     if (wordInfoBody.isJsonObject) {
       parsedDataList = getDataFromBodyObject(wordInfoBody.asJsonObject)
     }
 
-    // Body is an array = more than 1 part of speech per word
-    if (wordInfoBody.isJsonArray) {
-      parsedDataList = getDataFromBodyArray(wordInfoBody.asJsonArray)
-    }
     return parsedDataList
   }
 

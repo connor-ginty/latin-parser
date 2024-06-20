@@ -1,5 +1,6 @@
 package org.latinkotlinproject.services
 
+import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -31,11 +32,24 @@ class PerseusService {
       .asJsonObject
   }
 
-  fun getPerseusResponseBody(perseusServiceResponse: JsonObject): JsonElement {
-    return perseusServiceResponse
+  private fun hasPerseusResponseBody(perseusServiceResponse: JsonObject): Boolean {
+    val hasBody: JsonElement? = perseusServiceResponse
       .getAsJsonObject("RDF")
       .getAsJsonObject("Annotation")
-      .get("Body")
+      .get("hasBody")
+
+    return hasBody !== null
+  }
+
+  fun getPerseusResponseBody(perseusServiceResponse: JsonObject): JsonElement {
+    return if (hasPerseusResponseBody(perseusServiceResponse)) {
+      perseusServiceResponse
+        .getAsJsonObject("RDF")
+        .getAsJsonObject("Annotation")
+        .get("Body")
+    } else {
+      JsonArray()
+    }
   }
 }
 
