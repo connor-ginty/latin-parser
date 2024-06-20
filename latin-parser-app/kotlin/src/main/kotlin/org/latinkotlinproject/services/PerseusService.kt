@@ -31,8 +31,8 @@ class PerseusService {
       .asJsonObject
   }
 
-  fun getPerseusResponseBody(perseusController: JsonObject): JsonElement {
-    return perseusController
+  fun getPerseusResponseBody(perseusServiceResponse: JsonObject): JsonElement {
+    return perseusServiceResponse
       .getAsJsonObject("RDF")
       .getAsJsonObject("Annotation")
       .get("Body")

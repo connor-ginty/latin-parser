@@ -1,4 +1,4 @@
-package org.latinkotlinproject
+package org.latinkotlinproject.impl
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
@@ -160,12 +160,4 @@ class Parser {
 
     return partOfSpeechList
   }
-
-//	fun getPartOfSpeech(data: JsonObject): String{
-//		val wordInfoBody: JsonElement = perseusController.getPerseusResponseBody(data)
-//		if (wordInfoBody.isJsonArray) {
-//
-//		}
-//
-//	}
 }

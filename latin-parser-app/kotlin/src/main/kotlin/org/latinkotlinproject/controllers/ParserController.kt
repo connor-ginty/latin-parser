@@ -1,6 +1,6 @@
 package org.latinkotlinproject.controllers
 
-import org.latinkotlinproject.Parser
+import org.latinkotlinproject.impl.Parser
 import org.latinkotlinproject.data.ParsingData
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping

@@ -4,6 +4,8 @@ import org.junit.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.latinkotlinproject.impl.Noun
+import org.latinkotlinproject.impl.Parser
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 

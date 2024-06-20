@@ -1,4 +1,4 @@
-package org.latinkotlinproject
+package org.latinkotlinproject.impl
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import org.latinkotlinproject.data.NounData
@@ -8,11 +8,6 @@ import java.lang.NullPointerException
 
 private val perseusService = PerseusService()
 private val latinCache = LatinCache()
-
-sealed class StringResult {
-	data class Single(val value: String) : StringResult()
-	data class Multiple(val values: List<String>) : StringResult()
-}
 
 class Noun {
 
@@ -125,29 +120,6 @@ class Noun {
 
 		return endings[1].substring(0, 2)
 	}
-//		val perseusResponse: JsonObject =
-//			perseusCache.getFromCacheOrFetch(latinNoun, { perseusService.makePerseusRequest(latinNoun) }, 300_000)
-//		val nounInfoBody = perseusService.getPerseusResponseBody(perseusResponse)
-//
-//		val inflArray: JsonArray = if (nounInfoBody.isJsonArray) {
-//			nounInfoBody.asJsonArray
-//				.get(0).asJsonObject
-//				.getAsJsonObject("rest")
-//				.getAsJsonObject("entry")
-//				.getAsJsonArray("infl")
-//		} else {
-//			nounInfoBody.asJsonObject
-//				.getAsJsonObject("rest")
-//				.getAsJsonObject("entry")
-//				.getAsJsonArray("infl")
-//		}
-//
-//		return inflArray
-//			.get(0).asJsonObject
-//			.getAsJsonObject("term")
-//			.getAsJsonObject("stem")
-//			.get("\$").asString
-//	}
 
 	fun getGender(latinNoun: String): String {
 		val perseusResponse: JsonObject =

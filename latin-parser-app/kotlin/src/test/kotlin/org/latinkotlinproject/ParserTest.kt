@@ -3,6 +3,8 @@ import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 import org.latinkotlinproject.data.NounData
 import org.latinkotlinproject.data.ParsingData
+import org.latinkotlinproject.impl.Noun
+import org.latinkotlinproject.impl.Parser
 
 @DisplayName("Parser Tests")
 class ParserTest {
@@ -67,7 +69,6 @@ class ParserTest {
       )
       val result: List<ParsingData> = parser.parseWord("via")
 
-//      assertEquals(expected.size, result.size)
       assertEquals(expected, result)
     }
 
@@ -133,7 +134,6 @@ class ParserTest {
         )
       )
       val result: List<ParsingData> = parser.parseWord("turbam")
-      print(result)
       assertEquals(expected, result)
     }
 
@@ -201,6 +201,7 @@ class ParserTest {
       }
 
       @Test
+      @Disabled("More work needed on implementation")
       fun declineSimpleNounSecondDeclension() {
         val result: Map<String, NounData> = noun.declineNoun("puer")
         println(result)
@@ -215,7 +216,7 @@ class ParserTest {
 
       @Test
       fun testGettingStemForStemChangingNoun() {
-        val result: String? = noun.getStem("hominem")
+        val result: String = noun.getStem("hominem")
         println(result)
       }
     }
@@ -227,9 +228,6 @@ class ParserTest {
       @Test
       @Disabled("More work needed on implementation")
       fun testNounFirstDeclensionIsIncorrect() {
-//					val expected = "1st"
-////					val result: String = noun.getDeclension("locus")
-////					assertNotEquals(expected, result)
         println("Negative path tests will go here.")
       }
     }

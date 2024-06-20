@@ -33,11 +33,11 @@ export default {
     handleSubmissionClick(word){
       if (word) {
         this.errorMessage = ''
-        this.fetchData(word)
+        this.fetchParsingData(word)
         this.addToSearchHistory(word)
       }
     },
-    fetchData(word) {
+    fetchParsingData(word) {
       apiService.parseWord(word)
         .then(response => {
           this.parsedData = response.data
