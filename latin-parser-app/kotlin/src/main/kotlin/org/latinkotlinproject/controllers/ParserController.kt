@@ -17,6 +17,7 @@ class ParserController {
 
   val parser = Parser()
 
+  // Keeping to remember humble beginnings
   @GetMapping("/v1/parseWord")
   fun getParsingData(@RequestParam latinWord: String): List<ParsingData> {
     return parser.parseWord(latinWord)
@@ -29,7 +30,7 @@ class ParserController {
     val parsedDataResponse = ParserServiceResponse<List<ParsingData>>(
       success = true,
       message = "Showing results for $latinWord",
-      data = parser.parseWord(latinWord)
+      parsedDataList = parsedData
     )
 
     return if (parsedData.isEmpty()) {

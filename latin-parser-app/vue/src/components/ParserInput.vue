@@ -3,7 +3,7 @@
     <input type="text" v-model="searchQuery" placeholder="Enter Latin word here"
       @keydown.enter="handleSubmissionClick(this.searchQuery)">
     <button type="submit" @click="handleSubmissionClick(this.searchQuery)">Parse Word</button>
-    <ParserOutput :parsedData="parsedData" :displayWord="displayWord" :errorMessage="errorMessage" />
+    <ParserOutput :parsedData="parsedData" :errorMessage="errorMessage" :resultsMessage="resultsMessage"/>
     <SearchHistory :searchHistory="searchHistory" :errorMessage="errorMessage"
       :handleSubmissionClick="handleSubmissionClick" />
   </div>
@@ -23,51 +23,41 @@ export default {
   data() {
     return {
       searchQuery: '',
-      displayWord: this.searchQuery,
       parsedData: [],
       searchHistory: [],
+      resultsMessage: '',
       errorMessage: ''
     }
   },
   methods: {
-    handleSubmissionClick(word) {
+    async handleSubmissionClick(word) {
+      this.resetErrorMessage()
       if (word) {
-        this.fetchParsingData(word)
-        if (this.errorMessage === '') {
-          console.log(this.errorMessage)
+        try {
+          const response = await this.fetchParsingData(word)
+          console.log(response)
+          this.parsedData = response.data.parsedDataList
+          this.resultsMessage = response.data.message
+          this.searchQuery = ''
           this.addToSearchHistory(word)
+        } catch (error) {
+          console.error('Error fetching data', error)
+          this.updateErrorMessage(error.response.data.message)
+          console.log(this.errorMessage)
         }
       }
     },
-    // fetchParsingData(word) {
-    //   apiService.parseWord(word)
-    //     .then(response => {
-    //       this.parsedData = response.data
-    //       this.$emit('fetchedData', this.parsedData)
-    //     })
-    //     .catch(error => {
-    //       console.error('Error fetching data:', error)
-    //       this.errorMessage = `${this.displayWord} is not a Latin word. Please try another word.`
-    //       return this.errorMessage
-    //     })
-    //     this.displayWord = word
-    //   this.searchQuery = ''
-    // },
-
     async fetchParsingData(word) {
-      const response = await apiService.parseWord(word)
-      console.log(response.data.message)
-      if (response.status === 200) {
-        this.parsedData = response.data.data
-        this.displayWord = word
-        this.searchQuery = ''
-      } else {
-        this.errorMessage = response.data.message
-        this.$emit('word-not-found-error', this.errorMessage)
-        console.log(this.errorMessage)
-      }
+      return await apiService.parseWord(word)
+    },
+    updateErrorMessage(newMessage) {
+      this.errorMessage = newMessage
+    },
+    resetErrorMessage() {
+      this.errorMessage = ''
     },
     addToSearchHistory(word) {
+      console.log(this.errorMessage)
       if (!this.searchHistory.includes(word)) {
         if (this.errorMessage === '') {
           this.searchHistory.unshift(word)

@@ -1,6 +1,6 @@
 <template>
-  <div v-if="parsedData.length && this.errorMessage === ''" class="parser-output">
-    <h3 class="parsed-data">Results for "{{ displayWord }}"</h3>
+  <div v-if="parsedData.length && !this.errorMessage" class="parser-output">
+    <h3 class="parsed-data">{{ resultsMessage }}</h3>
     <table id="output-container-body">
       <thead>
         <tr>
@@ -43,7 +43,7 @@
       <br>
     </table>
   </div>
-  <div v-else-if="this.errorMessage !== ''" class="error-output">
+  <div v-else-if="this.errorMessage" class="error-output">
     <p>{{ this.errorMessage }}</p>
   </div>
 </template>
@@ -51,7 +51,7 @@
 <script>
 export default {
   name: 'ParserOutput',
-  props: ['displayWord','parsedData', 'errorMessage'],
+  props: ['displayWord','parsedData', 'resultsMessage', 'errorMessage'],
 }
 </script>
 
