@@ -7,4 +7,10 @@ class ServiceResponseBodies {
         var message: String,
         val parsedDataList: T? = null
     )
+
+    data class VocabServiceResponse<T>(
+        var success: Boolean,
+        var message: String,
+        val parsedDataList: T? = null
+    )
 }

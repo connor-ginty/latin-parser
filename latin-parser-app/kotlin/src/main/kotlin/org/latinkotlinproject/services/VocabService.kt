@@ -49,12 +49,4 @@ class VocabService {
 
     return contentObject
   }
-
-//  fun getType(latinWord: String): String{
-//    val vocabData = getVocabInformation(latinWord)
-//    val contentArray: JsonElement = vocabData["content"]
-//    for (i in 0 until contentArray.asJsonArray.size()){
-//
-//    }
-//  }
 }

@@ -1,6 +1,5 @@
 package org.latinkotlinproject.controllers
 
-import org.apache.coyote.Response
 import org.latinkotlinproject.impl.Parser
 import org.latinkotlinproject.data.ParsingData
 import org.springframework.http.HttpStatus

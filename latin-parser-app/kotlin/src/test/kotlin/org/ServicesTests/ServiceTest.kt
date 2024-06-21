@@ -1,5 +1,6 @@
 package org.ServicesTests
 
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import io.mockk.clearAllMocks
@@ -9,12 +10,12 @@ import io.mockk.verify
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 import org.latinkotlinproject.services.LatinCache
-//import org.latinlogic.services.VocabService
 import org.latinkotlinproject.services.PerseusService
+import org.latinkotlinproject.services.VocabService
 
 private val perseusTestCache = LatinCache()
 private val perseusTestService = PerseusService()
-//private val vocabTestService = VocabService()
+private val vocabTestService = VocabService()
 private val mockPerseusRequest: (String) -> JsonObject = mockk()
 
 @BeforeAll
@@ -73,12 +74,13 @@ class PerseusTests {
   @DisplayName("Vocab Service Tests")
   inner class VocabServiceTests {
 
-//    @Test
-//    @DisplayName("Vocab Service Returns Not Null For Verbs")
-//    fun testVocabRespondsWithSuccessStatusVerbs() {
-//      val result: JsonElement = vocabTestService.getVocabInformation("vinco")
-//      assertNotNull(result)
-//    }
+    @Test
+    @DisplayName("Vocab Service Returns Not Null For Verbs")
+    fun testVocabRespondsWithSuccessStatusVerbs() {
+      val result: JsonElement = vocabTestService.getVocabInformation("vinco")
+      print(result)
+      assertNotNull(result)
+    }
 //
 //    @Test
 //    @DisplayName("Vocab Service Returns Not Null For Nouns")
