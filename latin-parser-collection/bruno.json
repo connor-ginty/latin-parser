@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "latin-parser",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

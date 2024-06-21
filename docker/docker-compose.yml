@@ -1,0 +1,22 @@
+services:
+  backend:
+    build:
+      context: ../latin-parser-app/kotlin
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ../latin-parser-app/vue
+      dockerfile: Dockerfile
+    ports:
+      - "8081:80"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
