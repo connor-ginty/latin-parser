@@ -43,8 +43,8 @@
       <br>
     </table>
   </div>
-  <div v-else-if="errorMessage !== ''" class="error-output">
-    <p>{{ errorMessage }}</p>
+  <div v-else-if="this.errorMessage !== ''" class="error-output">
+    <p>{{ this.errorMessage }}</p>
   </div>
 </template>
 
