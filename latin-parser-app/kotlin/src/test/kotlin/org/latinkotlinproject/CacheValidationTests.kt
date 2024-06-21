@@ -1,6 +1,5 @@
-package org.ServicesTests
+package org.latinkotlinproject
 
-import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import io.mockk.clearAllMocks
@@ -11,11 +10,9 @@ import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 import org.latinkotlinproject.services.LatinCache
 import org.latinkotlinproject.services.PerseusService
-import org.latinkotlinproject.services.VocabService
 
 private val perseusTestCache = LatinCache()
 private val perseusTestService = PerseusService()
-private val vocabTestService = VocabService()
 private val mockPerseusRequest: (String) -> JsonObject = mockk()
 
 @BeforeAll
@@ -56,37 +53,5 @@ class PerseusTests {
       assertFalse(perseusTestCache.isEmpty(), "Test cache contains stored values.")
       assertEquals(cachedTestValue, result2)
     }
-  }
-
-  @Nested
-  @DisplayName("Perseus Service Tests")
-  inner class PerseusServiceTests {
-
-    @Test
-    @DisplayName("Perseus Service Returns Not Null")
-    fun testPerseusRespondsWithSuccessStatus() {
-      val result: JsonObject = perseusTestService.makePerseusRequest("vinco")
-      assertNotNull(result)
-    }
-  }
-
-  @Nested
-  @DisplayName("Vocab Service Tests")
-  inner class VocabServiceTests {
-
-    @Test
-    @DisplayName("Vocab Service Returns Not Null For Verbs")
-    fun testVocabRespondsWithSuccessStatusVerbs() {
-      val result: JsonElement = vocabTestService.getVocabInformation("vinco")
-      print(result)
-      assertNotNull(result)
-    }
-//
-//    @Test
-//    @DisplayName("Vocab Service Returns Not Null For Nouns")
-//    fun testVocabRespondsWithSuccessStatusNouns() {
-//      val result: JsonElement = vocabTestService.getVocabInformation("hominem")
-//      assertNotNull(result)
-//    }
   }
 }
