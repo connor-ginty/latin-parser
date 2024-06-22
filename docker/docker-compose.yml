@@ -1,16 +1,16 @@
 services:
-  backend:
+  latinparser-be:
     build:
-      context: ../latin-parser-app/kotlin
+      context: ..\latin-parser-app\kotlin
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
     networks:
       - app-network
 
-  frontend:
+  latinparser-fe:
     build:
-      context: ../latin-parser-app/vue
+      context: ..\latin-parser-app\vue
       dockerfile: Dockerfile
     ports:
       - "8081:80"
