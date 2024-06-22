@@ -13,6 +13,16 @@ Future iterations of this app may include a searchable dictionary as well as aut
 
 ![parsed results for puella using this application](image.png)
 
+## Running Application With Docker
+Open a terminal starting from the top level of the application and navigate to the docker directory one level below which is contains the `docker-compose.yml` file. Run the following command:
+
+```
+docker-compose up --build --force-recreate --no-deps
+```
+### Ports
+- Backend - 8080:8080
+- Frontend - 8081:80
+
 ## Inspiration
 This application is a true passion project for the sake of refining my technical skills as well as revisiting one of my past lives. Like the Romans themselves and their *mos maiorum*, I'm deeply endebted to those who've preceeded me in this oddly specific intersection of technology and classical linguistics.
 
