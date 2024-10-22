@@ -23,13 +23,13 @@ class ParserController {
     return parser.parseWord(latinWord)
   }
 
-  @GetMapping("/parse/{latinWord}")
-  fun getParsingDataV2(@PathVariable latinWord: String): ResponseEntity<Any> {
-    val parsedData: List<ParsingData> = parser.parseWord(latinWord)
+  @GetMapping("/parser/{word}")
+  fun getParsingDataV2(@PathVariable word: String): ResponseEntity<Any> {
+    val parsedData: List<ParsingData> = parser.parseWord(word)
 
     val parsedDataResponse = ParserServiceResponse<List<ParsingData>>(
       success = true,
-      message = "Showing results for $latinWord",
+      message = "Showing results for $word",
       parsedDataList = parsedData
     )
 
