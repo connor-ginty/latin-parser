@@ -1,4 +1,4 @@
-package org.latinkotlinproject.controllers
+package org.latinkotlinproject.data
 
 class ServiceResponseBodies {
 
