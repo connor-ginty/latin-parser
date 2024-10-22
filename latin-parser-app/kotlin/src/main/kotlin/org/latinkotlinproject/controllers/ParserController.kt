@@ -7,11 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import org.latinkotlinproject.controllers.ServiceResponseBodies.*
+import org.latinkotlinproject.data.ServiceResponseBodies.*
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.PathVariable
 
 @RestController
-@RequestMapping("/latinParser")
+@RequestMapping("/service/latin")
 class ParserController {
 
   val parser = Parser()
@@ -22,8 +23,8 @@ class ParserController {
     return parser.parseWord(latinWord)
   }
 
-  @GetMapping("/v2/parseWord")
-  fun getParsingDataV2(@RequestParam latinWord: String): ResponseEntity<Any> {
+  @GetMapping("/parse/{latinWord}")
+  fun getParsingDataV2(@PathVariable latinWord: String): ResponseEntity<Any> {
     val parsedData: List<ParsingData> = parser.parseWord(latinWord)
 
     val parsedDataResponse = ParserServiceResponse<List<ParsingData>>(

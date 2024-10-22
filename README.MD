@@ -13,11 +13,16 @@ Future iterations of this app may include a searchable dictionary as well as aut
 
 ![parsed results for puella using this application](image.png)
 
-## Running Application With Docker
-Open a terminal starting from the top level of the application and navigate to the docker directory one level below which is contains the `docker-compose.yml` file. Run the following command:
+## Running Application Locally With Docker
+Docker Desktop is required for this process. Link to download is [here](https://www.docker.com/products/docker-desktop/).
 
+Open a terminal starting from the top level of the application and navigate to the docker directory one level below which is contains the `docker-compose.yml` file. Run the following command:
 ```
-docker-compose up --build --force-recreate --no-deps
+docker-compose up --build --force-recreate --no-deps -d
+```
+To stop all the containers, run the following command:
+```
+docker-compose stop
 ```
 ### Ports
 - Backend - 8080:8080

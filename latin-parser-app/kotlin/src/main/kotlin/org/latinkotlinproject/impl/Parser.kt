@@ -125,40 +125,4 @@ class Parser {
     }
     return parsedDataList
   }
-
-  fun getPartOfSpeech(latinWord: String): List<String> {
-    val perseusResponse: JsonObject =
-      latinCache.getFromCacheOrFetch(latinWord, { perseusService.makePerseusRequest(latinWord) }, 30_000)
-    val nounInfoBody = perseusService.getPerseusResponseBody(perseusResponse)
-    val partOfSpeechList = mutableListOf<String>()
-
-    if (nounInfoBody.isJsonArray) {
-      val nounInfoBodyArray = nounInfoBody.asJsonArray
-      for (i in 0 until nounInfoBodyArray.size()) {
-        partOfSpeechList.add(
-          nounInfoBodyArray
-            .get(i).asJsonObject
-            .getAsJsonObject("rest")
-            .getAsJsonObject("entry")
-            .getAsJsonObject("dict")
-            .getAsJsonObject("pofs")
-            .get("\$")
-            .asString
-        )
-      }
-    }
-    if (nounInfoBody.isJsonObject) {
-      partOfSpeechList.add(
-        nounInfoBody.asJsonObject
-          .getAsJsonObject("rest")
-          .getAsJsonObject("entry")
-          .getAsJsonObject("dict")
-          .getAsJsonObject("pofs")
-          .get("\$")
-          .asString
-      )
-    }
-
-    return partOfSpeechList
-  }
 }
