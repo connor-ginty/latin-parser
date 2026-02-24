@@ -35,7 +35,7 @@ class ParserController {
 
     return if (parsedData.isEmpty()) {
       parsedDataResponse.success = false
-      parsedDataResponse.message = "$latinWord is not a Latin word. Please try another word."
+      parsedDataResponse.message = "$word is not a Latin word. Please try another word."
       ResponseEntity.status(HttpStatus.NOT_FOUND).body(parsedDataResponse)
     } else {
       ResponseEntity.ok(parsedDataResponse)

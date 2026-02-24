@@ -1,17 +1,11 @@
 
 <template>
-  <HeaderComponent :src="headerImage"/>
+  <HeaderComponent />
   <router-view />
 </template>
 
-<script>
-import HeaderComponent from '@/components/HeaderComponent'
-
-export default {
-  components: {
-    HeaderComponent
-  },
-}
+<script setup lang="ts">
+import HeaderComponent from '@/components/HeaderComponent.vue'
 </script>
 
 <style>

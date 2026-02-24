@@ -1,58 +1,52 @@
 <template>
-  <div v-if="parsedData.length && !this.errorMessage" class="parser-output">
+  <div v-if="parsedData.length && !errorMessage" class="parser-output">
     <h3 class="parsed-data">{{ resultsMessage }}</h3>
     <table id="output-container-body">
       <thead>
         <tr>
-          <th>Part of Speech</th>
-          <th>Declension</th>
-          <th>Gender</th>
-          <th>Case</th>
-          <th>Number</th>
-          <th>Stem Type</th>
-          <th>Person</th>
-          <th>Tense</th>
-          <th>Voice</th>
-          <th>Mood</th>
+          <th v-for="col in columns" :key="col.key">{{ col.label }}</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(data, index) in parsedData" :key="index" class="parsed-row" @click="changeStyle">
-          <td v-if="data.partOfSpeech">{{ data.partOfSpeech }}</td>
-          <td v-else class="not-applicable">N/A</td>
-          <td v-if="data.declension">{{ data.declension }}</td>
-          <td v-else class="not-applicable">N/A</td>
-          <td v-if="data.gender">{{ data.gender }}</td>
-          <td v-else class="not-applicable">N/A</td>
-          <td v-if="data.case">{{ data.case }}</td>
-          <td v-else class="not-applicable">N/A</td>
-          <td v-if="data.number">{{ data.number }}</td>
-          <td v-else class="not-applicable">N/A</td>
-          <td v-if="data.stemType">{{ data.stemType }}</td>
-          <td v-else class="not-applicable">N/A</td>
-          <td v-if="data.person">{{ data.person }}</td>
-          <td v-else class="not-applicable">N/A</td>
-          <td v-if="data.tense">{{ data.tense }}</td>
-          <td v-else class="not-applicable">N/A</td>
-          <td v-if="data.voice">{{ data.voice }}</td>
-          <td v-else class="not-applicable">N/A</td>
-          <td v-if="data.mood">{{ data.mood }}</td>
-          <td v-else class="not-applicable">N/A</td>
+        <tr v-for="(data, index) in parsedData" :key="index" class="parsed-row">
+          <td v-for="col in columns" :key="col.key"
+            :class="{ 'not-applicable': !data[col.key] }">
+            {{ data[col.key] || 'N/A' }}
+          </td>
         </tr>
       </tbody>
-      <br>
     </table>
   </div>
-  <div v-else-if="this.errorMessage" class="error-output">
-    <p>{{ this.errorMessage }}</p>
+  <div v-else-if="errorMessage" class="error-output">
+    <p>{{ errorMessage }}</p>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'ParserOutput',
-  props: ['displayWord','parsedData', 'resultsMessage', 'errorMessage'],
-}
+<script setup lang="ts">
+import { ParsedData } from '@/types/index'
+
+withDefaults(defineProps<{
+  parsedData: ParsedData[]
+  resultsMessage: string
+  errorMessage: string
+}>(), {
+  parsedData: () => [],
+  resultsMessage: '',
+  errorMessage: ''
+})
+
+const columns: { label: string; key: keyof ParsedData }[] = [
+  { label: 'Part of Speech', key: 'partOfSpeech' },
+  { label: 'Declension',     key: 'declension' },
+  { label: 'Gender',         key: 'gender' },
+  { label: 'Case',           key: 'case' },
+  { label: 'Number',         key: 'number' },
+  { label: 'Stem Type',      key: 'stemType' },
+  { label: 'Person',         key: 'person' },
+  { label: 'Tense',          key: 'tense' },
+  { label: 'Voice',          key: 'voice' },
+  { label: 'Mood',           key: 'mood' },
+]
 </script>
 
 <style scoped>
@@ -97,7 +91,6 @@ td.not-applicable {
 .error-output {
   height: auto;
   padding: 20px;
-  /* background-color: #f77c7c; */
   font-size: large;
 }
 </style>

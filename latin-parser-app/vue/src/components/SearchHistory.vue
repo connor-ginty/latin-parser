@@ -1,25 +1,25 @@
 <template>
-  <div class="search-history" :searchHistory="searchHistory">
+  <div class="search-history">
     <nav v-if="searchHistory.length">
       <ul class="search-history-list">
         <h3>Search History</h3>
         <li v-for="(searchedWord, index) in searchHistory" :key="index"
-          @click="parseWordFromHistory(searchedWord)">{{ searchedWord }}</li>
+          @click="emit('parse-word', searchedWord)">{{ searchedWord }}</li>
       </ul>
     </nav>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'SearchHistory',
-  props: ['searchHistory', 'handleSubmissionClick'],
-  methods: {
-    parseWordFromHistory(word){
-      this.handleSubmissionClick(word)
-    }
-  }
-}
+<script setup lang="ts">
+const emit = defineEmits<{
+  (e: 'parse-word', word: string): void
+}>()
+
+withDefaults(defineProps<{
+  searchHistory: string[]
+}>(), {
+  searchHistory: () => []
+})
 </script>
 
 <style>

@@ -7,17 +7,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'HeaderComponent',
-  data () {
-    return {
-      headerImage: "@/assets/helmet.jpg"
-    }
-  }
-}
-</script>
-
 <style scoped>
 .header-image {
   height: 100px;
