@@ -1,21 +1,38 @@
 services:
   latinparser-be:
     build:
-      context: ..\latin-parser-app\kotlin
+      context: ../latin-parser-app/kotlin
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
     networks:
       - app-network
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   latinparser-fe:
     build:
-      context: ..\latin-parser-app\vue
+      context: ../latin-parser-app/vue
       dockerfile: Dockerfile
     ports:
       - "8081:80"
     networks:
       - app-network
+    depends_on:
+      latinparser-be:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 128m
 
 networks:
   app-network:

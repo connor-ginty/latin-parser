@@ -5,12 +5,12 @@ class ServiceResponseBodies {
     data class ParserServiceResponse<T>(
         var success: Boolean,
         var message: String,
-        val parsedDataList: T? = null
+        val inflections: T? = null
     )
 
     data class VocabServiceResponse<T>(
         var success: Boolean,
         var message: String,
-        val parsedDataList: T? = null
+        val entries: T? = null
     )
 }

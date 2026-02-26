@@ -3,126 +3,77 @@ package org.latinkotlinproject.impl
 import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import org.latinkotlinproject.data.ParsingData
+import org.latinkotlinproject.data.WordInflection
 import org.latinkotlinproject.services.LatinCache
 import org.latinkotlinproject.services.PerseusService
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Service
 
-private val perseusService = PerseusService()
-private val latinCache = LatinCache()
+@Service
+class Parser(
+    private val perseusService: PerseusService,
+    private val latinCache: LatinCache,
+    @Value("\${cache.ttl-ms:300000}") private val cacheTtlMs: Long
+) {
+    private val log = LoggerFactory.getLogger(Parser::class.java)
 
-class Parser {
+    fun parseWord(latinWord: String): List<WordInflection> {
+        val perseusResponse: JsonObject =
+            latinCache.getFromCacheOrFetch(latinWord, { perseusService.makePerseusRequest(latinWord) }, cacheTtlMs)
+        val wordInfoBody = perseusService.getPerseusResponseBody(perseusResponse)
 
-  fun parseWord(latinWord: String): List<ParsingData> {
-    val perseusResponse: JsonObject =
-      latinCache.getFromCacheOrFetch(latinWord, { perseusService.makePerseusRequest(latinWord) }, 300_000)
-    val wordInfoBody = perseusService.getPerseusResponseBody(perseusResponse)
-
-    var parsedDataList: List<ParsingData> = mutableListOf<ParsingData>()
-
-    // Body is an array = more than 1 part of speech per word
-    if (wordInfoBody.isJsonArray && !wordInfoBody.asJsonArray.isEmpty) {
-      parsedDataList = getDataFromBodyArray(wordInfoBody.asJsonArray)
-    }
-
-    // Body is an object = 1 part of speech per word
-    if (wordInfoBody.isJsonObject) {
-      parsedDataList = getDataFromBodyObject(wordInfoBody.asJsonObject)
-    }
-
-    return parsedDataList
-  }
-
-  private fun getDataFromBodyObject(body: JsonObject): MutableList<ParsingData> {
-    val parsedDataList = mutableListOf<ParsingData>()
-    val inflElement: JsonElement = body.asJsonObject
-      .getAsJsonObject("rest")
-      .getAsJsonObject("entry")
-      .get("infl")
-    if (inflElement.isJsonArray) {
-      for (i in 0 until inflElement.asJsonArray.size()) {
-        parsedDataList.add(
-          ParsingData(
-            inflElement.asJsonArray.get(i).asJsonObject.getAsJsonObject("pofs")?.asJsonObject?.get("\$")?.asString,
-            inflElement.asJsonArray.get(i).asJsonObject.getAsJsonObject("decl")?.asJsonObject?.get("\$")?.asString,
-            inflElement.asJsonArray.get(i).asJsonObject.getAsJsonObject("gend")?.asJsonObject?.get("\$")?.asString,
-            inflElement.asJsonArray.get(i).asJsonObject.getAsJsonObject("case")?.asJsonObject?.get("\$")?.asString,
-            inflElement.asJsonArray.get(i).asJsonObject.getAsJsonObject("num")?.asJsonObject?.get("\$")?.asString,
-            inflElement.asJsonArray.get(i).asJsonObject.getAsJsonObject("stemtype")?.asJsonObject?.get("\$")?.asString,
-            inflElement.asJsonArray.get(i).asJsonObject.getAsJsonObject("pers")?.asJsonObject?.get("\$")?.asString,
-            inflElement.asJsonArray.get(i).asJsonObject.getAsJsonObject("tense")?.asJsonObject?.get("\$")?.asString,
-            inflElement.asJsonArray.get(i).asJsonObject.getAsJsonObject("voice")?.asJsonObject?.get("\$")?.asString,
-            inflElement.asJsonArray.get(i).asJsonObject.getAsJsonObject("mood")?.asJsonObject?.get("\$")?.asString,
-          )
-        )
-      }
-    }
-    if (inflElement.isJsonObject) {
-      return mutableListOf( // list with single JSON object
-        ParsingData(
-          inflElement.asJsonObject.getAsJsonObject("pofs")?.asJsonObject?.get("\$")?.asString,
-          inflElement.asJsonObject.getAsJsonObject("decl")?.asJsonObject?.get("\$")?.asString,
-          inflElement.asJsonObject.getAsJsonObject("gend")?.asJsonObject?.get("\$")?.asString,
-          inflElement.asJsonObject.getAsJsonObject("case")?.asJsonObject?.get("\$")?.asString,
-          inflElement.asJsonObject.getAsJsonObject("num")?.asJsonObject?.get("\$")?.asString,
-          inflElement.asJsonObject.getAsJsonObject("stemtype")?.asJsonObject?.get("\$")?.asString,
-          inflElement.asJsonObject.getAsJsonObject("pers")?.asJsonObject?.get("\$")?.asString,
-          inflElement.asJsonObject.getAsJsonObject("tense")?.asJsonObject?.get("\$")?.asString,
-          inflElement.asJsonObject.getAsJsonObject("voice")?.asJsonObject?.get("\$")?.asString,
-          inflElement.asJsonObject.getAsJsonObject("mood")?.asJsonObject?.get("\$")?.asString,
-        )
-      )
-    }
-    return parsedDataList
-  }
-
-  private fun getDataFromBodyArray(body: JsonArray): MutableList<ParsingData> {
-    val parsedDataList = mutableListOf<ParsingData>()
-    val inflElementList = mutableListOf<JsonElement>()
-    for (j in 0 until body.asJsonArray.size()) {
-      inflElementList.add(body.asJsonArray
-        .get(j).asJsonObject
-        .getAsJsonObject("rest")
-        .getAsJsonObject("entry")
-        .get("infl")
-      )
-    }
-
-    for (k in 0 until inflElementList.size) {
-      if (inflElementList[k].isJsonArray) { // Infl is an array = more than 1 possible case, number, and gender for word
-        for (x in 0 until inflElementList[k].asJsonArray.size()) {
-          parsedDataList.add(
-            ParsingData(
-              inflElementList[k].asJsonArray.get(x).asJsonObject.getAsJsonObject("pofs")?.asJsonObject?.get("\$")?.asString,
-              inflElementList[k].asJsonArray.get(x).asJsonObject.getAsJsonObject("decl")?.asJsonObject?.get("\$")?.asString,
-              inflElementList[k].asJsonArray.get(x).asJsonObject.getAsJsonObject("gend")?.asJsonObject?.get("\$")?.asString,
-              inflElementList[k].asJsonArray.get(x).asJsonObject.getAsJsonObject("case")?.asJsonObject?.get("\$")?.asString,
-              inflElementList[k].asJsonArray.get(x).asJsonObject.getAsJsonObject("num")?.asJsonObject?.get("\$")?.asString,
-              inflElementList[k].asJsonArray.get(x).asJsonObject.getAsJsonObject("stemtype")?.asJsonObject?.get("\$")?.asString,
-              inflElementList[k].asJsonArray.get(x).asJsonObject.getAsJsonObject("pers")?.asJsonObject?.get("\$")?.asString,
-              inflElementList[k].asJsonArray.get(x).asJsonObject.getAsJsonObject("tense")?.asJsonObject?.get("\$")?.asString,
-              inflElementList[k].asJsonArray.get(x).asJsonObject.getAsJsonObject("voice")?.asJsonObject?.get("\$")?.asString,
-              inflElementList[k].asJsonArray.get(x).asJsonObject.getAsJsonObject("mood")?.asJsonObject?.get("\$")?.asString,
-            )
-          )
+        return when {
+            wordInfoBody.isJsonArray && !wordInfoBody.asJsonArray.isEmpty -> getDataFromBodyArray(wordInfoBody.asJsonArray)
+            wordInfoBody.isJsonObject -> getDataFromBodyObject(wordInfoBody.asJsonObject)
+            else -> emptyList()
         }
-      }
-      if (inflElementList[k].isJsonObject) { // Infl is an object = only 1 possible case, number, gender, tense, mood, or voice for word
-        parsedDataList.add(
-          ParsingData(
-            inflElementList[k].asJsonObject.getAsJsonObject("pofs")?.get("\$")?.asString,
-            inflElementList[k].asJsonObject.getAsJsonObject("decl")?.asJsonObject?.get("\$")?.asString,
-            inflElementList[k].asJsonObject.getAsJsonObject("gend")?.asJsonObject?.get("\$")?.asString,
-            inflElementList[k].asJsonObject.getAsJsonObject("case")?.asJsonObject?.get("\$")?.asString,
-            inflElementList[k].asJsonObject.getAsJsonObject("num")?.asJsonObject?.get("\$")?.asString,
-            inflElementList[k].asJsonObject.getAsJsonObject("stemtype")?.asJsonObject?.get("\$")?.asString,
-            inflElementList[k].asJsonObject.getAsJsonObject("pers")?.asJsonObject?.get("\$")?.asString,
-            inflElementList[k].asJsonObject.getAsJsonObject("tense")?.asJsonObject?.get("\$")?.asString,
-            inflElementList[k].asJsonObject.getAsJsonObject("voice")?.asJsonObject?.get("\$")?.asString,
-            inflElementList[k].asJsonObject.getAsJsonObject("mood")?.asJsonObject?.get("\$")?.asString,
-          )
-        )
-      }
     }
-    return parsedDataList
-  }
+
+    private fun parseInflObject(infl: JsonObject): WordInflection = WordInflection(
+        infl.getAsJsonObject("pofs")?.get("\$")?.asString,
+        infl.getAsJsonObject("decl")?.get("\$")?.asString,
+        infl.getAsJsonObject("gend")?.get("\$")?.asString,
+        infl.getAsJsonObject("case")?.get("\$")?.asString,
+        infl.getAsJsonObject("num")?.get("\$")?.asString,
+        infl.getAsJsonObject("stemtype")?.get("\$")?.asString,
+        infl.getAsJsonObject("pers")?.get("\$")?.asString,
+        infl.getAsJsonObject("tense")?.get("\$")?.asString,
+        infl.getAsJsonObject("voice")?.get("\$")?.asString,
+        infl.getAsJsonObject("mood")?.get("\$")?.asString,
+    )
+
+    private fun inflElementToInflections(inflElement: JsonElement): List<WordInflection> = when {
+        inflElement.isJsonArray -> inflElement.asJsonArray.map { parseInflObject(it.asJsonObject) }
+        inflElement.isJsonObject -> listOf(parseInflObject(inflElement.asJsonObject))
+        else -> emptyList()
+    }
+
+    private fun getDataFromBodyObject(body: JsonObject): List<WordInflection> {
+        return try {
+            val inflElement = body.getAsJsonObject("rest")
+                ?.getAsJsonObject("entry")
+                ?.get("infl")
+                ?: return emptyList()
+            inflElementToInflections(inflElement)
+        } catch (e: Exception) {
+            log.warn("Failed to parse Perseus body object: {}", e.message)
+            emptyList()
+        }
+    }
+
+    private fun getDataFromBodyArray(body: JsonArray): List<WordInflection> =
+        body.flatMap { element ->
+            try {
+                val inflElement = element.asJsonObject
+                    ?.getAsJsonObject("rest")
+                    ?.getAsJsonObject("entry")
+                    ?.get("infl")
+                    ?: return@flatMap emptyList()
+                inflElementToInflections(inflElement)
+            } catch (e: Exception) {
+                log.warn("Failed to parse Perseus body array element: {}", e.message)
+                emptyList()
+            }
+        }
 }

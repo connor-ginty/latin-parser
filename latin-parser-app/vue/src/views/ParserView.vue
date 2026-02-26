@@ -15,6 +15,8 @@ import ParserInput from '@/components/ParserInput.vue'
 import ParserOutput from '@/components/ParserOutput.vue'
 import SearchHistory from '@/components/SearchHistory.vue'
 
+const MAX_HISTORY = 50
+
 const parsedData = ref<ParsedData[]>([])
 const searchHistory = ref<string[]>([])
 const resultsMessage = ref('')
@@ -24,15 +26,19 @@ async function handleSearch(word: string): Promise<void> {
   errorMessage.value = ''
   try {
     const response = await apiService.parseWord(word)
-    parsedData.value = response.data.parsedDataList
+    parsedData.value = response.data.inflections
     resultsMessage.value = response.data.message
     if (!searchHistory.value.includes(word)) {
       searchHistory.value.unshift(word)
+      if (searchHistory.value.length > MAX_HISTORY) {
+        searchHistory.value.pop()
+      }
     }
   } catch (error) {
-    console.error('Error fetching data', error)
     if (axios.isAxiosError(error)) {
-      errorMessage.value = error.response?.data?.message ?? ''
+      errorMessage.value = error.response?.data?.message || 'An error occurred while fetching data.'
+    } else {
+      errorMessage.value = 'An unexpected error occurred. Please try again.'
     }
   }
 }

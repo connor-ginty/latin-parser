@@ -1,5 +1,6 @@
 package org.latinkotlinproject
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Configuration
@@ -10,17 +11,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 class LatinKotlinProjectApplication
 
 fun main(args: Array<String>) {
-	SpringApplication.run(LatinKotlinProjectApplication::class.java, *args)
+    SpringApplication.run(LatinKotlinProjectApplication::class.java, *args)
 }
 
 @Configuration
-class AppConfig : WebMvcConfigurer {
-	override fun addCorsMappings(registry: CorsRegistry) {
-		registry.addMapping("/**")
-			.allowedOrigins("http://localhost:8081")
-			.allowedMethods("GET")
-			.allowedHeaders("*")
-			.allowCredentials(true)
-			.maxAge(3600)
-	}
+class AppConfig(
+    @Value("\${cors.allowed-origin:http://localhost:8081}") private val allowedOrigin: String
+) : WebMvcConfigurer {
+    override fun addCorsMappings(registry: CorsRegistry) {
+        registry.addMapping("/**")
+            .allowedOrigins(allowedOrigin)
+            .allowedMethods("GET")
+            .allowedHeaders("*")
+            .allowCredentials(true)
+            .maxAge(3600)
+    }
 }

@@ -1,6 +1,6 @@
 package org.latinkotlinproject.data
 
-data class ParsingData(
+data class WordInflection(
     val partOfSpeech: String? = null,
     val declension: String? = null,
     val gender: String? = null,

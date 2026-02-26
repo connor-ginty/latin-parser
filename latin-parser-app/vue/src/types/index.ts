@@ -12,6 +12,7 @@ export interface ParsedData {
 }
 
 export interface ParseResponse {
-  parsedDataList: ParsedData[]
+  success: boolean
   message: string
+  inflections: ParsedData[]
 }

@@ -16,4 +16,10 @@ import HeaderComponent from '@/components/HeaderComponent.vue'
   text-align: center;
   color: #2c3e50;
 }
+
+@media (min-width: 769px) {
+  #app {
+    margin-left: 160px;
+  }
+}
 </style>

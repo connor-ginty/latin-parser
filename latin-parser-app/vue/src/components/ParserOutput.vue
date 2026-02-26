@@ -1,21 +1,23 @@
 <template>
   <div v-if="parsedData.length && !errorMessage" class="parser-output">
     <h3 class="parsed-data">{{ resultsMessage }}</h3>
-    <table id="output-container-body">
-      <thead>
-        <tr>
-          <th v-for="col in columns" :key="col.key">{{ col.label }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(data, index) in parsedData" :key="index" class="parsed-row">
-          <td v-for="col in columns" :key="col.key"
-            :class="{ 'not-applicable': !data[col.key] }">
-            {{ data[col.key] || 'N/A' }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-scroll">
+      <table id="output-container-body">
+        <thead>
+          <tr>
+            <th v-for="col in columns" :key="col.key">{{ col.label }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(data, index) in parsedData" :key="index" class="parsed-row">
+            <td v-for="col in columns" :key="col.key"
+              :class="{ 'not-applicable': !data[col.key] }">
+              {{ data[col.key] || 'N/A' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <div v-else-if="errorMessage" class="error-output">
     <p>{{ errorMessage }}</p>
@@ -58,9 +60,14 @@ div.parser-output {
   text-align: center;
 }
 
+.table-scroll {
+  width: 65%;
+  overflow-x: auto;
+}
+
 table {
   border-collapse: collapse;
-  width: 65%;
+  width: 100%;
 }
 
 th {
@@ -92,5 +99,15 @@ td.not-applicable {
   height: auto;
   padding: 20px;
   font-size: large;
+}
+
+@media (max-width: 768px) {
+  .table-scroll {
+    width: 100%;
+  }
+  th, td {
+    padding: 6px;
+    font-size: 0.8rem;
+  }
 }
 </style>
